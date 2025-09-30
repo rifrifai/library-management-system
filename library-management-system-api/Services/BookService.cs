@@ -1,8 +1,58 @@
 using System;
+using AutoMapper;
+using library_management_system_api.DTOs.Book;
+using library_management_system_api.Models;
+using library_management_system_api.Repositories.Interfaces;
+using library_management_system_api.Services.Interfaces;
 
 namespace library_management_system_api.Services;
 
-public class BookService
+public class BookService : IBookService
 {
+    private readonly IBookRepository _bookRepo;
+    private readonly IMapper _mapper;
+    public BookService(IBookRepository bookRepo, IMapper mapper)
+    {
+        _bookRepo = bookRepo;
+        _mapper = mapper;
+    }
+    public async Task<IEnumerable<BookDto>> GetAllBooksAsync()
+    {
+        var books = await _bookRepo.GetAllAsync();
+        var result = _mapper.Map<IEnumerable<BookDto>>(books);
+        return result;
+    }
 
+    public async Task<BookDto?> GetBookByIdAsync(Guid id)
+    {
+        var book = await _bookRepo.GetByIdAsync(id);
+        if (book is null) return null;
+        var result = _mapper.Map<BookDto>(book);
+        return result;
+    }
+    public async Task<BookDto> CreateBookAsync(CreateBookDto createBookDto)
+    {
+        var book = _mapper.Map<Book>(createBookDto);
+        await _bookRepo.CreateAsync(book);
+
+        var result = _mapper.Map<BookDto>(book);
+        return result;
+    }
+
+    public async Task<BookDto?> PatchBookAsync(Guid id, PatchBookDto patchBookDto)
+    {
+        var book = await _bookRepo.GetByIdAsync(id);
+        if (book is null) return null;
+
+        _mapper.Map(patchBookDto, book);
+        await _bookRepo.UpdateAsync(book);
+
+        var result = _mapper.Map<BookDto>(book);
+        return result;
+    }
+    
+    public Task<bool> DeleteBookAsync(Guid id)
+    {
+        throw new NotImplementedException();
+    }
 }
