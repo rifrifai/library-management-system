@@ -27,6 +27,7 @@ public class BookService : IBookService
     {
         var book = await _bookRepo.GetByIdAsync(id);
         if (book is null) return null;
+        
         var result = _mapper.Map<BookDto>(book);
         return result;
     }
@@ -50,9 +51,10 @@ public class BookService : IBookService
         var result = _mapper.Map<BookDto>(book);
         return result;
     }
-    
+
     public Task<bool> DeleteBookAsync(Guid id)
     {
-        throw new NotImplementedException();
+        var result = _bookRepo.SoftDeleteAsync(id);
+        return result;
     }
 }

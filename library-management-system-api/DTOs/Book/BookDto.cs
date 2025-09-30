@@ -14,5 +14,5 @@ public class BookDto
     public int Year { get; set; }
     public int Stock { get; set; }
     public bool IsDeleted { get; set; }
-    public required string Username { get; set; }
+    // public required string Username { get; set; }
 }
