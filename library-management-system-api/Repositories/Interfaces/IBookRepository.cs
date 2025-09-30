@@ -8,9 +8,9 @@ namespace library_management_system_api.Repositories.Interfaces;
 
 public interface IBookRepository
 {
+    Task<IEnumerable<Book>> GetAllAsync();
     Task<Book?> GetByIdAsync(Guid id);
-    Task<List<Book>> GetAllAsync();
-    Task AddAsync(Book book);
-    Task UpdateAsync(Book book);
-    Task SoftDeleteAsync(Guid id);
+    Task CreateAsync(Book book);
+    Task <bool>UpdateAsync(Book book);
+    Task <bool>SoftDeleteAsync(Guid id);
 }
