@@ -32,10 +32,6 @@ public class BookRepository : IBookRepository
 
     public async Task<bool> UpdateAsync(Book book)
     {
-        var existingBook = await _context.Books.AsNoTracking().FirstOrDefaultAsync(b => b.Id == book.Id);
-        if (existingBook is null) return false;
-
-        _context.Books.Update(book);
         await _context.SaveChangesAsync();
         return true;
     }
