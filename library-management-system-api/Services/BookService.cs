@@ -45,7 +45,25 @@ public class BookService : IBookService
         var book = await _bookRepo.GetByIdAsync(id);
         if (book is null) return null;
 
-        _mapper.Map(patchBookDto, book);
+        // Manual update - hanya update yang tidak null
+        if (patchBookDto.Title != null)
+            book.Title = patchBookDto.Title;
+        
+        if (patchBookDto.Author != null)
+            book.Author = patchBookDto.Author;
+        
+        if (patchBookDto.Genre != null)
+            book.Genre = patchBookDto.Genre;
+        
+        if (patchBookDto.Year.HasValue)
+            book.Year = patchBookDto.Year.Value;
+        
+        if (patchBookDto.Stock.HasValue)
+            book.Stock = patchBookDto.Stock.Value;
+        
+        if (patchBookDto.IsDeleted.HasValue)
+            book.IsDeleted = patchBookDto.IsDeleted.Value;
+
         await _bookRepo.UpdateAsync(book);
 
         var result = _mapper.Map<BookDto>(book);
