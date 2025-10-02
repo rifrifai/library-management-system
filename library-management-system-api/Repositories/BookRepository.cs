@@ -15,12 +15,12 @@ public class BookRepository : IBookRepository
     }
     public async Task<IEnumerable<Book>> GetAllAsync(string? searchItem)
     {
-        var query = _context.Books.AsQueryable();
+        var query = _context.Books.Where(b => !b.IsDeleted);
 
         if (!string.IsNullOrWhiteSpace(searchItem))
         {
-            var upperCaseSearchTerm = searchItem.Trim().ToUpper();
-            query = query.Where(b => b.Title.Contains(upperCaseSearchTerm, StringComparison.CurrentCultureIgnoreCase) || b.Author.Contains(upperCaseSearchTerm, StringComparison.CurrentCultureIgnoreCase));
+            var searchTerm = $"%{searchItem.Trim()}%";
+            query = query.Where(b => EF.Functions.Like(b.Title, searchTerm) || EF.Functions.Like(b.Author, searchTerm));
         }
 
         var result = await query.ToListAsync();
