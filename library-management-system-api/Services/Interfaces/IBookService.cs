@@ -6,7 +6,7 @@ namespace library_management_system_api.Services.Interfaces;
 
 public interface IBookService
 {
-    Task<IEnumerable<BookDto>> GetAllBooksAsync();
+    Task<IEnumerable<BookDto>> GetAllBooksAsync(string? searchItem);
     Task<BookDto?> GetBookByIdAsync(Guid id);
     Task<BookDto> CreateBookAsync(CreateBookDto createBookDto);
     Task<BookDto?> PatchBookAsync(Guid id, PatchBookDto patchBookDto);

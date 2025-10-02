@@ -13,10 +13,18 @@ public class BookRepository : IBookRepository
     {
         _context = context;
     }
-    public async Task<IEnumerable<Book>> GetAllAsync()
+    public async Task<IEnumerable<Book>> GetAllAsync(string? searchItem)
     {
-        var getAll = await _context.Books.Where(b => !b.IsDeleted).ToListAsync();
-        return getAll;
+        var query = _context.Books.AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(searchItem))
+        {
+            var upperCaseSearchTerm = searchItem.Trim().ToUpper();
+            query = query.Where(b => b.Title.Contains(upperCaseSearchTerm, StringComparison.CurrentCultureIgnoreCase) || b.Author.Contains(upperCaseSearchTerm, StringComparison.CurrentCultureIgnoreCase));
+        }
+
+        var result = await query.ToListAsync();
+        return result;
     }
 
     public async Task<Book?> GetByIdAsync(Guid id)

@@ -16,9 +16,9 @@ public class BookService : IBookService
         _bookRepo = bookRepo;
         _mapper = mapper;
     }
-    public async Task<IEnumerable<BookDto>> GetAllBooksAsync()
+    public async Task<IEnumerable<BookDto>> GetAllBooksAsync(string? searchItem)
     {
-        var books = await _bookRepo.GetAllAsync();
+        var books = await _bookRepo.GetAllAsync(searchItem);
         var result = _mapper.Map<IEnumerable<BookDto>>(books);
         return result;
     }

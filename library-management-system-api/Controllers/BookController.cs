@@ -19,9 +19,9 @@ public class BookController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<BookDto>>> GetAllBooks()
+    public async Task<ActionResult<IEnumerable<BookDto>>> GetAllBooks([FromQuery] string? searchItem)
     {
-        var books = await _bookService.GetAllBooksAsync();
+        var books = await _bookService.GetAllBooksAsync(searchItem);
         return Ok(books);
     }
 
