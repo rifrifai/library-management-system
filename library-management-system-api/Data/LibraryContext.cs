@@ -11,5 +11,6 @@ public class LibraryContext(DbContextOptions<LibraryContext> options) : DbContex
 {
     public DbSet<User> Users => Set<User>();
     public DbSet<Book> Books => Set<Book>();
+    public DbSet<Movie> Movies => Set<Movie>();
     public DbSet<BorrowTransaction> BorrowTransactions => Set<BorrowTransaction>();
 }
