@@ -9,8 +9,8 @@ namespace library_management_system_api.Data;
 
 public class LibraryContext(DbContextOptions<LibraryContext> options) : DbContext(options)
 {
-    public DbSet<User> Users => Set<User>();
+    // public DbSet<User> Users => Set<User>();
     public DbSet<Book> Books => Set<Book>();
     public DbSet<Movie> Movies => Set<Movie>();
-    public DbSet<BorrowTransaction> BorrowTransactions => Set<BorrowTransaction>();
+    // public DbSet<BorrowTransaction> BorrowTransactions => Set<BorrowTransaction>();
 }
