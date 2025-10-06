@@ -54,6 +54,6 @@ public class MovieController : ControllerBase
         var wasDeleted = await _movieService.DeleteMovieAsync(id);
         if (!wasDeleted) return NotFound("Movie is not found!");
 
-        return Ok("Movie deleted successfully");
+        return NoContent();
     }
 }
