@@ -59,7 +59,7 @@ public class MovieService : IMovieService
     public async Task<bool> DeleteMovieAsync(Guid movieId)
     {
         var result = await _movieRepo.SoftDeleteAsync(movieId);
-        return result;
+        return result;  
     }
 
 }

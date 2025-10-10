@@ -1,33 +1,51 @@
 using System;
+using library_management_system_api.Data;
 using library_management_system_api.Models;
 using library_management_system_api.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using SQLitePCL;
 
 namespace library_management_system_api.Repositories;
 
 public class SiswaRepository : ISiswaRepository
 {
-    public Task CreateAsync(Siswa siswa)
+    private readonly LibraryContext _context;
+    public SiswaRepository(LibraryContext context)
     {
-        throw new NotImplementedException();
+        _context = context;
     }
 
-    public Task<IEnumerable<Siswa>> GetAllAsync()
+    public async Task CreateAsync(Siswa siswa)
     {
-        throw new NotImplementedException();
+        await _context.Siswas.AddAsync(siswa);
+        await _context.SaveChangesAsync();
     }
 
-    public Task<Siswa?> GetByIdAsync(Guid siswaId)
+    public async Task<IEnumerable<Siswa>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        var siswas = await _context.Siswas.AsNoTracking().ToListAsync();
+        return siswas;
     }
 
-    public Task<bool> UpdateAsync(Siswa siswa)
+    public async Task<Siswa?> GetByIdAsync(Guid siswaId)
     {
-        throw new NotImplementedException();
+        var siswa = await _context.Siswas.FirstOrDefaultAsync(s => s.Id == siswaId);
+        return siswa;
     }
 
-    public Task<bool> SoftDeleteAsync(Guid siswaId)
+    public async Task<bool> UpdateAsync(Siswa siswa)
     {
-        throw new NotImplementedException();
+        await _context.SaveChangesAsync();
+        return true;
+    }
+
+    public async Task<bool> DeleteAsync(Guid siswaId)
+    {
+        var siswa = await _context.Siswas.FirstOrDefaultAsync(s => s.Id == siswaId);
+        if (siswa is null) return false;
+
+        _context.Siswas.Remove(siswa);
+        await _context.SaveChangesAsync();
+        return true;
     }
 }
