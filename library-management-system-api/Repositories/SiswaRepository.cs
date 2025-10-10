@@ -39,11 +39,8 @@ public class SiswaRepository : ISiswaRepository
         return true;
     }
 
-    public async Task<bool> DeleteAsync(Guid siswaId)
+    public async Task<bool> DeleteAsync(Siswa siswa)
     {
-        var siswa = await _context.Siswas.FirstOrDefaultAsync(s => s.Id == siswaId);
-        if (siswa is null) return false;
-
         _context.Siswas.Remove(siswa);
         await _context.SaveChangesAsync();
         return true;

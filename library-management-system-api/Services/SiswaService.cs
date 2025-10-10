@@ -27,7 +27,7 @@ public class SiswaService : ISiswaService
 
     public async Task<IEnumerable<SiswaDto>> GetAllSiswasAsync()
     {
-        var siswas = _siswaRepo.GetAllAsync();
+        var siswas = await _siswaRepo.GetAllAsync();
         var result = _mapper.Map<IEnumerable<SiswaDto>>(siswas);
         return result;
     }
@@ -58,8 +58,10 @@ public class SiswaService : ISiswaService
 
     public async Task<bool> DeleteSiswaAsync(Guid siswaId)
     {
-        await _siswaRepo.GetByIdAsync(siswaId);
+        var siswa = await _siswaRepo.GetByIdAsync(siswaId);
+        if (siswa is null) return false;
 
+        await _siswaRepo.DeleteAsync(siswa);
         return true;
     }
 }

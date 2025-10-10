@@ -9,5 +9,5 @@ public interface ISiswaRepository
     Task<Siswa?> GetByIdAsync(Guid siswaId);
     Task CreateAsync(Siswa siswa);
     Task<bool> UpdateAsync(Siswa siswa);
-    Task<bool> DeleteAsync(Guid siswaId);
+    Task<bool> DeleteAsync(Siswa siswa);
 }

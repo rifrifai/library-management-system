@@ -1,5 +1,6 @@
 using System;
 using library_management_system_api.DTOs.Siswa;
+using library_management_system_api.Models;
 
 namespace library_management_system_api.Services.Interfaces;
 
