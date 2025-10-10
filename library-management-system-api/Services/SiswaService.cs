@@ -1,5 +1,7 @@
 using System;
+using AutoMapper;
 using library_management_system_api.DTOs.Siswa;
+using library_management_system_api.Models;
 using library_management_system_api.Repositories.Interfaces;
 using library_management_system_api.Services.Interfaces;
 
@@ -8,32 +10,56 @@ namespace library_management_system_api.Services;
 public class SiswaService : ISiswaService
 {
     private readonly ISiswaRepository _siswaRepo;
-    public SiswaService(ISiswaRepository siswaRepo)
+    private readonly IMapper _mapper;
+    public SiswaService(ISiswaRepository siswaRepo, IMapper mapper)
     {
         _siswaRepo = siswaRepo;
+        _mapper = mapper;
     }
-    public Task<SiswaDto> CreateSiswaAsync(CreateSiswaDto createSiswaDto)
+    public async Task<SiswaDto> CreateSiswaAsync(CreateSiswaDto createSiswaDto)
     {
-        throw new NotImplementedException();
+        var siswa = _mapper.Map<Siswa>(createSiswaDto);
+        await _siswaRepo.CreateAsync(siswa);
+
+        var result = _mapper.Map<SiswaDto>(siswa);
+        return result;
     }
 
-    public Task<IEnumerable<SiswaDto>> GetAllSiswasAsync()
+    public async Task<IEnumerable<SiswaDto>> GetAllSiswasAsync()
     {
-        throw new NotImplementedException();
+        var siswas = _siswaRepo.GetAllAsync();
+        var result = _mapper.Map<IEnumerable<SiswaDto>>(siswas);
+        return result;
     }
 
-    public Task<SiswaDto?> GetByIdSiswaAsync(Guid siswaId)
+    public async Task<SiswaDto?> GetByIdSiswaAsync(Guid siswaId)
     {
-        throw new NotImplementedException();
+        var siswa = await _siswaRepo.GetByIdAsync(siswaId);
+        if (siswa is null) return null;
+
+        var result = _mapper.Map<SiswaDto>(siswa);
+        return result;
     }
 
-    public Task<SiswaDto?> PatchSiswaAsync(Guid siswaId, PatchSiswaDto patchSiswaDto)
+    public async Task<SiswaDto?> PatchSiswaAsync(Guid siswaId, PatchSiswaDto patchSiswaDto)
     {
-        throw new NotImplementedException();
+        var siswa = await _siswaRepo.GetByIdAsync(siswaId);
+        if (siswa is null) return null;
+
+        if (patchSiswaDto.Nama != null) siswa.Nama = patchSiswaDto.Nama;
+        if (patchSiswaDto.Umur.HasValue) siswa.Umur = patchSiswaDto.Umur.Value;
+        if (patchSiswaDto.Kelas != null) siswa.Kelas = patchSiswaDto.Kelas;
+        if (patchSiswaDto.TanggalDaftar.HasValue) siswa.TanggalDaftar = patchSiswaDto.TanggalDaftar.Value;
+
+        await _siswaRepo.UpdateAsync(siswa);
+        var result = _mapper.Map<SiswaDto>(siswa);
+        return result;
     }
 
-    public Task<bool> DeleteSiswaAsync(Guid siswaId)
+    public async Task<bool> DeleteSiswaAsync(Guid siswaId)
     {
-        throw new NotImplementedException();
+        await _siswaRepo.GetByIdAsync(siswaId);
+
+        return true;
     }
 }
