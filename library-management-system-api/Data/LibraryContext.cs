@@ -12,4 +12,5 @@ public class LibraryContext(DbContextOptions<LibraryContext> options) : DbContex
     public DbSet<Book> Books => Set<Book>();
     public DbSet<Movie> Movies => Set<Movie>();
     public DbSet<Siswa> Siswas => Set<Siswa>();
+    public DbSet<Room> Rooms => Set<Room>();
 }
