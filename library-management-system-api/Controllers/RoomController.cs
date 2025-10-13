@@ -40,7 +40,7 @@ public class RoomController : ControllerBase
     }
 
     [HttpPatch]
-    public async Task<ActionResult<RoomDto>> PatchRoom([FromBody] Guid id, PatchRoomDto patchRoomDto)
+    public async Task<ActionResult<RoomDto>> PatchRoom(Guid id, [FromBody] PatchRoomDto patchRoomDto)
     {
         var wasUpdated = await _roomService.PatchRoomAsync(id, patchRoomDto);
         if (wasUpdated is null) return NotFound("Room is not found!");

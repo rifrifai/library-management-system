@@ -19,6 +19,8 @@ public class RoomService : IRoomService
     public async Task<RoomDto> CreateRoomAsync(CreateRoomDto createRoomDto)
     {
         var room = _mapper.Map<Room>(createRoomDto);
+        room.IsAvailable = true;
+        room.CreatedAt = DateTime.UtcNow;
         await _roomRepo.CreateAsync(room);
 
         var result = _mapper.Map<RoomDto>(room);
