@@ -27,8 +27,8 @@ public class RoomRepository : IRoomRepository
 
     public async Task<Room?> GetByIdAsync(Guid roomId)
     {
-        var siswa = await _context.Rooms.FirstOrDefaultAsync(r => r.Id == roomId);
-        return siswa;
+        var room = await _context.Rooms.FirstOrDefaultAsync(r => r.Id == roomId);
+        return room;
     }
 
     public async Task<bool> PatchAsync(Room room)
@@ -37,7 +37,6 @@ public class RoomRepository : IRoomRepository
         return true;
     }
 
-    
     public async Task<bool> DeleteAsync(Room room)
     {
         _context.Rooms.Remove(room);
